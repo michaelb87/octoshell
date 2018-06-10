@@ -9,6 +9,7 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.widgets import TextArea
 from lib.messages import WELCOME_MSG
 from lib.command_parser import CommandParser
+from lib.api_manager import ApiManager
 
 class Octoshell():
     cmd_history = []
@@ -19,7 +20,8 @@ class Octoshell():
         self.apikey = apikey
         self.output_field = TextArea(style='class:output-field', text=WELCOME_MSG)
         self.input_field = TextArea(height=1, prompt=' # ', style='class:input-field')
-        self.cmd_parser = CommandParser(self.host, self.apikey)
+        self.api_manager = ApiManager(self.host, self.apikey)
+        self.cmd_parser = CommandParser(self.api_manager)
         self.define_keybindings()
         self.main()
 

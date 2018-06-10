@@ -1,6 +1,6 @@
 class CommandParser():
-    def __init__(self, host, apikey):
-        pass
+    def __init__(self, api_manager):
+        self.api_manager = api_manager
 
     def parse_cmd(self,cmd):
         cleaned = cmd.strip()
