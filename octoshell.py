@@ -1,3 +1,4 @@
+import argparse
 from prompt_toolkit.application import Application
 from prompt_toolkit.document import Document
 from prompt_toolkit.filters import has_focus
@@ -7,15 +8,18 @@ from prompt_toolkit.layout.layout import Layout
 from prompt_toolkit.styles import Style
 from prompt_toolkit.widgets import TextArea
 from lib.messages import WELCOME_MSG
-from lib.command_parser import parse_cmd
+from lib.command_parser import CommandParser
 
 class Octoshell():
     cmd_history = []
     cmd_history_cursor = 0
 
-    def __init__(self):
+    def __init__(self, host, apikey):
+        self.host = host
+        self.apikey = apikey
         self.output_field = TextArea(style='class:output-field', text=WELCOME_MSG)
         self.input_field = TextArea(height=1, prompt=' # ', style='class:input-field')
+        self.cmd_parser = CommandParser(self.host, self.apikey)
         self.define_keybindings()
         self.main()
 
@@ -60,7 +64,7 @@ class Octoshell():
         """
         new_text = (self.output_field.text 
             + '> ' + self.input_field.text + '\n'
-            + parse_cmd(self.input_field.text) 
+            + self.cmd_parser.parse_cmd(self.input_field.text) 
             + '\n')
         self.output_field.buffer.document = Document(
             text=new_text, cursor_position=len(new_text))
@@ -75,4 +79,9 @@ class Octoshell():
     
 
 if __name__ == '__main__':
-    Octoshell()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('host', help="Octoprint host")
+    parser.add_argument('apikey', help="Octoprint API key")
+    parser.parse_args()
+    args = parser.parse_args()
+    Octoshell(args.host, args.apikey)
