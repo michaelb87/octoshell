@@ -7,12 +7,14 @@ from prompt_toolkit.layout.containers import HSplit, Window
 from prompt_toolkit.layout.layout import Layout
 from prompt_toolkit.styles import Style
 from prompt_toolkit.widgets import TextArea
-#from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+from prompt_toolkit.history import FileHistory
 from prompt_toolkit.shortcuts import PromptSession
 from lib.messages import WELCOME_MSG
 from lib.command_parser import CommandParser
 from lib.api_manager import ApiManager
 from lib.autocomplete import AutoCompleter
+
+HISTORY_FILE = '/tmp/.octoshell_history'
 
 class Octoshell:
     cmd_history = []
@@ -30,6 +32,7 @@ class Octoshell:
             message="> ",
             enable_history_search=True,
             auto_suggest=AutoCompleter(),
+            history=FileHistory(HISTORY_FILE)
         )
         app = session.app
         textarea = TextArea(text=WELCOME_MSG, read_only=False, scrollbar=True)

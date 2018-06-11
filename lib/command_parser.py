@@ -5,6 +5,15 @@ class CommandParser:
 
     def __init__(self, api_manager):
         self.api_manager = api_manager
+    
+    @staticmethod
+    def commands(self):
+        return [
+            {
+                'cmd': ['h', 'help'],
+                'action': self.help_text,
+            }
+        ]
 
     def parse(self, cmd):
         cleaned = cmd.strip()

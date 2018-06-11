@@ -29,9 +29,9 @@ class ApiManager:
             resp = r.json()
             curr_file = resp["job"]["file"]
             progress = resp["progress"]
-            return "Printing {} is {} percent done. {} minutes left.".format(
+            return "Printing {} is {}% done. {} minutes left.".format(
                 curr_file["display"],
-                progress["completion"],
+                round(float(progress["completion"]) , 2),
                 round(float(progress["printTimeLeft"]) / 60, 2),
             )
         except Exception as e:
