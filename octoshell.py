@@ -56,6 +56,18 @@ class Octoshell():
         def _(event):
             ''' Pressing Ctrl-Q or Ctrl-C will exit the user interface. '''
             event.app.exit()
+        @self.kb.add('up')
+        def _(event):
+            if self.cmd_history_cursor > 0:
+                self.cmd_history_cursor -= 1
+                self.input_field.text = self.cmd_history[self.cmd_history_cursor]
+        @self.kb.add('down')
+        def _(event):
+            if self.cmd_history_cursor < len(self.cmd_history)-1:
+                self.cmd_history_cursor += 1
+                self.input_field.text = self.cmd_history[self.cmd_history_cursor]
+            else:
+                self.input_field.text = ''
         @self.kb.add('enter', filter=has_focus(self.input_field))
         def _(event):
             self.add_line(event)
